@@ -1,0 +1,55 @@
+import base64
+import functions_framework
+import os
+import ssl
+import smtplib
+from email.message import EmailMessage
+
+# Triggered from a message on a Cloud Pub/Sub topic.
+@functions_framework.cloud_event
+def hello_pubsub(cloud_event):
+    # Print out the data from Pub/Sub, to prove that it worked
+    price=float(base64.b64decode(cloud_event.data["message"]["data"]))
+
+if price >= user_price:
+        print("msg sent")
+	email_sender = 'devagcppracise@gmail.com'
+email_password = 'rslv evhg anwy wwuq'  # Fetching the password from environment variable
+email_receiver = 'sanjeevsan975@gmail.com'
+subject = 'stock trigger'
+body ="""triggered"""
+
+em=EmailMessage()
+em['From'] = email_sender
+em['To'] = email_receiver
+em['Subject'] = subject
+em.set_content(body)
+
+context = ssl.create_default_context()
+
+with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp: 
+    smtp.login(email_sender, email_password)
+    smtp.send_message(em)
+
+
+
+
+client = vonage.Client(key="e6d58bd1", secret="hG6ZjXLSdsJcHg1N")
+sms = vonage.Sms(client)
+client = vonage.Client(key="e6d58bd1", secret="hG6ZjXLSdsJcHg1N")
+sms = vonage.Sms(client)
+responseData = sms.send_message(
+    {
+        "from": "Vonage APIs",
+        "to": "917306598047",
+        "text": "Infosys stock value has exceeded the threshold you set in your preferences.The current value stands at 1434.5, surpassing your specified threshold of {user_price}.",
+    }
+)
+
+if responseData["messages"][0]["status"] == "0":
+    print("Message sent successfully.")
+else:
+    print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+
+	
+        
